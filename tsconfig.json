@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react",
+    "types": ["node", "jest", "@testing-library/jest-dom"]
+  },
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig"
+}
