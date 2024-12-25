@@ -1,10 +1,12 @@
-import {Header, SpaceBetween } from "@cloudscape-design/components";
+import {Header, SpaceBetween, Spinner} from "@cloudscape-design/components";
 import FormField from "@cloudscape-design/components/form-field";
 import Input from "@cloudscape-design/components/input";
 import * as React from "react";
 import Button from "@cloudscape-design/components/button";
 import Form from "@cloudscape-design/components/form";
-import {useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCreateUser} from "../../../api/user";
+import {useNavigate} from "react-router";
 
 export interface CreateProps {
     username: string;
@@ -14,11 +16,28 @@ const Create = ({ username }: CreateProps) => {
     const [password, setPassword] = useState<string>("");
     const [confirmedPassword, setConfirmedPassword] = useState<string>("");
 
+    const navigate = useNavigate();
+
+    const isConfirmedPasswordIdentical = useMemo(() => confirmedPassword === password, [confirmedPassword, password]);
+    const isValidForm = useMemo(() => isConfirmedPasswordIdentical, [isConfirmedPasswordIdentical]);
+
+    const { mutate: createUser, isPending: isCreateUserLoading, isSuccess: isCreateUserSuccess } = useCreateUser();
+    const onSubmitClick = useCallback(() => {
+        createUser({ username, password });
+    }, [createUser, username, password]);
+
+    useEffect(() => {
+        if (isCreateUserSuccess) {
+            navigate('/auth/login');
+        }
+    }, [isCreateUserSuccess, navigate]);
+
     return (
         <Form
             actions={
                 <SpaceBetween direction="horizontal" size="xs">
-                    <Button variant="primary">Submit</Button>
+                    <Button variant="primary" onClick={onSubmitClick} disabled={!isValidForm}>Submit</Button>
+                    {isCreateUserLoading && <Spinner />}
                 </SpaceBetween>
             }
             header={<Header variant="h1">Create Account</Header>}
@@ -34,7 +53,7 @@ const Create = ({ username }: CreateProps) => {
                         type='password'
                     />
                 </FormField>
-                <FormField label="Confirm password">
+                <FormField label="Confirm password" errorText={isConfirmedPasswordIdentical ? '' : 'Passwords do not match'}>
                     <Input
                         value={confirmedPassword}
                         onChange={({ detail }) => setConfirmedPassword(detail.value)}

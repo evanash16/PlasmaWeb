@@ -4,7 +4,12 @@ import Input from "@cloudscape-design/components/input";
 import * as React from "react";
 import Button from "@cloudscape-design/components/button";
 import Form from "@cloudscape-design/components/form";
-import {useState} from "react";
+import {useCallback, useState} from "react";
+import {authLogin} from "../../../api/auth";
+import {AuthLoginResponse} from "../../../types/auth";
+import {useCookies} from "react-cookie";
+import {SESSION_ID_COOKIE} from "../../../constant/cookie";
+import {useNavigate} from "react-router";
 
 export interface LoginProps {
     username: string;
@@ -12,12 +17,21 @@ export interface LoginProps {
 
 const Login = ({ username }: LoginProps) => {
     const [password, setPassword] = useState<string>("");
+    const [, setCookie,] = useCookies([SESSION_ID_COOKIE]);
+
+    const navigate = useNavigate();
+
+    const onSubmitClick = useCallback(() => {
+        authLogin({ username, password })
+            .then(({ id: sessionId }: AuthLoginResponse) => setCookie(SESSION_ID_COOKIE, sessionId))
+            .then(() => navigate('/'));
+    }, [username, password, setCookie, navigate]);
 
     return (
         <Form
             actions={
                 <SpaceBetween direction="horizontal" size="xs">
-                    <Button variant="primary">Submit</Button>
+                    <Button variant="primary" disabled={!password} onClick={onSubmitClick}>Submit</Button>
                 </SpaceBetween>
             }
             header={<Header variant="h1">Login</Header>}

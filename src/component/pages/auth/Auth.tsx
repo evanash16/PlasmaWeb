@@ -1,9 +1,12 @@
 import * as React from "react";
 import {Box, Container, Grid, Header, Icon, SpaceBetween, TextContent} from "@cloudscape-design/components";
 import CreateOrLogin from "./CreateOrLogin";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Create from "./Create";
 import Login from "./Login";
+import {SESSION_ID_COOKIE} from "../../../constant/cookie";
+import {useCookies} from "react-cookie";
+import {useNavigate} from "react-router";
 
 export enum AuthType {
     LOGIN,
@@ -16,6 +19,15 @@ interface AuthProps {
 
 const Auth = ({type}: AuthProps) => {
     const [username, setUsername] = useState<string>('');
+    const [cookies] = useCookies([SESSION_ID_COOKIE]);
+    const navigate = useNavigate();
+
+    const sessionIdCookie: string | undefined = cookies[SESSION_ID_COOKIE];
+    useEffect(() => {
+        if (sessionIdCookie) {
+            navigate('/');
+        }
+    }, [navigate, sessionIdCookie]);
 
     return (
         <Grid gridDefinition={[{colspan: 4, offset: 4}]}>

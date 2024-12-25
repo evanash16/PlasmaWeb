@@ -8,10 +8,19 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:8080",
   "dependencies": {
+    "@cloudscape-design/components": "^3.0.856",
+    "@cloudscape-design/global-styles": "^1.0.33",
+    "@tanstack/react-query": "^5.62.10",
+    "@types/lodash": "^4.17.13",
     "cra-template-typescript": "1.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "lodash": "^4.17.21",
+    "qs": "^6.13.1",
+    "react": "^18.0.0",
+    "react-cookie": "^7.2.2",
+    "react-dom": "^18.0.0",
+    "react-router": "^7.1.1",
     "react-scripts": "5.0.1"
   },
   "devDependencies": {

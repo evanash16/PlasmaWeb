@@ -20,11 +20,9 @@ interface CreateOrLoginProps {
 }
 
 const CreateOrLogin = ({ username, setUsername }: CreateOrLoginProps) => {
-    const [state, setState] = useState<'input' | 'verification' | 'navigation'>('input')
     const [usernameSearchString, setUsernameSearchString] = useState<string>('');
 
     const navigate = useNavigate();
-
     const {
         data: searchUsersResponse,
         isLoading: isSearchUsersLoading,
@@ -32,19 +30,14 @@ const CreateOrLogin = ({ username, setUsername }: CreateOrLoginProps) => {
         usernameSearchString,
         maxPageSize: 1
     });
+
     const users: User[] = useMemo(() =>
         flow(map<SearchUsersResponse, User[]>(({users}) => users), flatten)(searchUsersResponse?.pages),
         [searchUsersResponse]);
 
-    const onNextClick = useCallback(() => {
-        if (state === 'input') {
-            setUsernameSearchString(username);
-            setState('verification');
-        }
-    }, [state, username]);
+    const onNextClick = useCallback(() => setUsernameSearchString(username), [username]);
     useEffect(() => {
-        if (state === 'verification' && !isSearchUsersLoading) {
-            setState('navigation');
+        if (usernameSearchString && !isSearchUsersLoading) {
             const shouldSignIn = users?.[0]?.username === username;
             if (shouldSignIn) {
                 navigate("login");
@@ -52,7 +45,7 @@ const CreateOrLogin = ({ username, setUsername }: CreateOrLoginProps) => {
                 navigate("create");
             }
         }
-    }, [isSearchUsersLoading, navigate, users, state, username]);
+    }, [isSearchUsersLoading, navigate, users, username, usernameSearchString]);
 
     return (
         <Form
