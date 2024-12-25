@@ -24,3 +24,13 @@ export interface User {
     username: string;
     creationTime: number;
 }
+
+export interface GetUserRequest {
+    id: string;
+}
+
+export interface GetUserResponse {
+    id: string;
+    username: string;
+    creationTime: number;
+}

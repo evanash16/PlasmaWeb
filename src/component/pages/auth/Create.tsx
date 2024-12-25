@@ -1,10 +1,13 @@
-import {Header, SpaceBetween, Spinner} from "@cloudscape-design/components";
-import FormField from "@cloudscape-design/components/form-field";
-import Input from "@cloudscape-design/components/input";
-import * as React from "react";
-import Button from "@cloudscape-design/components/button";
-import Form from "@cloudscape-design/components/form";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
+import {
+    Button,
+    Form,
+    FormField,
+    Header,
+    Input,
+    SpaceBetween,
+    Spinner
+} from "@cloudscape-design/components";
 import {useCreateUser} from "../../../api/user";
 import {useNavigate} from "react-router";
 

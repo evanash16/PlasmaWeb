@@ -1,7 +1,6 @@
-import * as React from "react";
-import {Box, Container, Grid, Header, Icon, SpaceBetween, TextContent} from "@cloudscape-design/components";
+import React, {useEffect, useState} from "react";
+import {Box, Container, Grid, Icon, SpaceBetween} from "@cloudscape-design/components";
 import CreateOrLogin from "./CreateOrLogin";
-import {useEffect, useState} from "react";
 import Create from "./Create";
 import Login from "./Login";
 import {SESSION_ID_COOKIE} from "../../../constant/cookie";

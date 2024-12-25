@@ -1,10 +1,12 @@
-import {Header, SpaceBetween } from "@cloudscape-design/components";
-import FormField from "@cloudscape-design/components/form-field";
-import Input from "@cloudscape-design/components/input";
-import * as React from "react";
-import Button from "@cloudscape-design/components/button";
-import Form from "@cloudscape-design/components/form";
-import {useCallback, useState} from "react";
+import React, {useCallback, useState} from "react";
+import {
+    Button,
+    Form,
+    FormField,
+    Header,
+    Input,
+    SpaceBetween
+} from "@cloudscape-design/components";
 import {authLogin} from "../../../api/auth";
 import {AuthLoginResponse} from "../../../types/auth";
 import {useCookies} from "react-cookie";
@@ -17,6 +19,7 @@ export interface LoginProps {
 
 const Login = ({ username }: LoginProps) => {
     const [password, setPassword] = useState<string>("");
+    const [isPasswordInvalid, setIsPasswordInvalid] = useState<boolean>(false);
     const [, setCookie,] = useCookies([SESSION_ID_COOKIE]);
 
     const navigate = useNavigate();
@@ -24,7 +27,8 @@ const Login = ({ username }: LoginProps) => {
     const onSubmitClick = useCallback(() => {
         authLogin({ username, password })
             .then(({ id: sessionId }: AuthLoginResponse) => setCookie(SESSION_ID_COOKIE, sessionId))
-            .then(() => navigate('/'));
+            .then(() => navigate('/'))
+            .catch(() => setIsPasswordInvalid(true));
     }, [username, password, setCookie, navigate]);
 
     return (
@@ -40,7 +44,7 @@ const Login = ({ username }: LoginProps) => {
                 <FormField label="Username">
                     <Input value={username} disabled={true}/>
                 </FormField>
-                <FormField label="Password">
+                <FormField label="Password" errorText={isPasswordInvalid ? 'The password you entered was not correct' : ''}>
                     <Input
                         value={password}
                         onChange={({ detail }) => setPassword(detail.value)}

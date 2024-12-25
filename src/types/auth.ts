@@ -8,6 +8,10 @@ export interface AuthLoginResponse {
     id: string;
 }
 
+export interface AuthIdentityRequest {
+    id: string;
+}
+
 export interface AuthIdentityResponse {
     id: string;
     userId: string;

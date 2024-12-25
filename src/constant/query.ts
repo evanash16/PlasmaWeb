@@ -1,7 +1,8 @@
 
 export enum QueryKey {
     SEARCH_USERS = 'searchUsers',
-    AUTH_LOGIN = 'authLogin',
+    GET_USER = 'getUser',
+    AUTH_IDENTITY = 'authIdentity',
 }
 
 export enum MutationKey {
