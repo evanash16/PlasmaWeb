@@ -1,22 +1,30 @@
 import React from "react";
-import CreatePost from "./CreatePost";
+import ManagePost from "../../common/ManagePost";
 import {Box, Container, Grid} from "@cloudscape-design/components";
 import {useAuthIdentity} from "../../../api/auth";
-import Posts from "../../common/Posts";
+import UserPosts from "../../common/UserPosts";
+import {useProfileParams} from "../../../util/url";
 
 const Profile = () => {
-    const { data: authIdentity } = useAuthIdentity();
-    const userId: string | undefined = authIdentity?.userId;
+    const {id} = useProfileParams();
+    const {data: authIdentity} = useAuthIdentity();
+    const userId: string | undefined = id ?? authIdentity?.userId;
+    const readOnly = userId !== authIdentity?.userId;
 
     return (
         <Box padding='xs'>
-            <Grid gridDefinition={[ { offset: 3, colspan: 6 }]}>
+            <Grid gridDefinition={[{offset: 3, colspan: 6}]}>
                 <Box>
-                    <Container>
-                        <CreatePost/>
-                    </Container>
+                    {!readOnly && (
+                        <Container>
+                            <ManagePost operation='create'/>
+                        </Container>
+                    )}
                     {userId &&
-                        <Posts postedById={userId}></Posts>
+                        <UserPosts
+                            postedById={userId}
+                            readOnly={readOnly}
+                        />
                     }
                 </Box>
             </Grid>

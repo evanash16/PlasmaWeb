@@ -9,9 +9,10 @@ import {Box, Button, Spinner} from "@cloudscape-design/components";
 
 export interface PostsProps {
     postedById: string;
+    readOnly: boolean;
 }
 
-const Posts = ({postedById}: PostsProps) => {
+const UserPosts = ({postedById, readOnly}: PostsProps) => {
     const {
         data: listPostsResponse,
         isFetching: isListPostsFetching,
@@ -26,7 +27,7 @@ const Posts = ({postedById}: PostsProps) => {
     const posts: Post[] = useMemo(() =>
             flow(map<ListPostsResponse, Post[]>(({posts}) => posts), flatten)(listPostsResponse?.pages),
         [listPostsResponse]);
-    const postContainers = useMemo(() => posts.map(post => (<PostContainer post={post}/>)), [posts]);
+    const postContainers = useMemo(() => posts.map(post => (<PostContainer post={post} readOnly={readOnly}/>)), [posts, readOnly]);
 
     return (
         <>
@@ -40,4 +41,4 @@ const Posts = ({postedById}: PostsProps) => {
     )
 }
 
-export default Posts;
+export default UserPosts;

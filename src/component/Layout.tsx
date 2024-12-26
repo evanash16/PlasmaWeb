@@ -31,23 +31,26 @@ const Layout = () => {
     }, [getUserResponse?.creationTime]);
 
     const signOutId = 'sign-out';
+    const profileId = 'profile';
     const onDropdownItemClick = useCallback((event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
         switch (event.detail.id) {
             case signOutId:
                 deleteCookie(SESSION_ID_COOKIE);
                 break;
+            case profileId:
+                navigate('profile');
+                break;
         }
-    }, [deleteCookie]);
+    }, [deleteCookie, navigate]);
 
     return (
         <div>
             <TopNavigation
                 identity={{
-                    href: "#",
+                    href: "/",
                     title: "Plasma",
                     logo: {
                         src: "/plasma-ball-plasma-svgrepo-com.svg",
-                        alt: "Plasma"
                     }
                 }}
                 utilities={[
@@ -58,6 +61,7 @@ const Layout = () => {
                         iconName: "user-profile",
                         onItemClick: onDropdownItemClick,
                         items: [
+                            {iconName: 'user-profile', id: profileId, text: "Profile"},
                             {id: signOutId, text: "Sign out"}
                         ]
                     }

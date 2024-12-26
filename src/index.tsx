@@ -19,7 +19,7 @@ root.render(
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Layout/>}>
-                        <Route path='profile' element={<Profile />}/>
+                        <Route path='profile*' element={<Profile />}/>
                     </Route>
                     <Route path="/auth">
                         <Route index element={<Auth/>}/>

@@ -33,3 +33,14 @@ export interface CreatePostRequest {
 export interface CreatePostResponse {
     id: string;
 }
+
+export interface UpdatePostRequest {
+    id: string;
+    title?: string;
+    body?: OptionalString;
+}
+
+export interface OptionalString {
+    isRemove?: boolean;
+    value?: string;
+}
