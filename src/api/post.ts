@@ -12,8 +12,7 @@ import {
     UseInfiniteQueryResult,
     useMutation,
     UseMutationResult,
-    useQuery, useQueryClient,
-    UseQueryResult
+    useQueryClient,
 } from "@tanstack/react-query";
 import {MutationKey, QueryKey} from "../constant/query";
 import {useAuthIdentity} from "./auth";
