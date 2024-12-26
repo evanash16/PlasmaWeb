@@ -1,5 +1,12 @@
 import { baseUrl } from "../constant/api";
-import {CreatePostRequest, CreatePostResponse, ListPostsRequest, ListPostsResponse, UpdatePostRequest} from "../types/post";
+import {
+    CreatePostRequest,
+    CreatePostResponse,
+    DeletePostRequest,
+    ListPostsRequest,
+    ListPostsResponse,
+    UpdatePostRequest
+} from "../types/post";
 import {
     InfiniteData, useInfiniteQuery,
     UseInfiniteQueryResult,
@@ -84,6 +91,34 @@ export const useUpdatePost = (id: string): UseMutationResult<void, Error, Omit<U
     return useMutation({
         mutationKey: [MutationKey.UPDATE_POST, id],
         mutationFn: (input: Omit<UpdatePostRequest, 'id'>) => updatePost(authIdentity?.id, { ...input, id }),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: [QueryKey.LIST_POSTS],
+                type: 'all',
+                exact: false
+            });
+        }
+    })
+}
+
+const deletePost = async (sessionId: string | undefined, input: DeletePostRequest): Promise<void> => {
+    const { id } = input;
+    const res = await fetch(`${baseUrl}/post/${id}`, {
+        method: 'DELETE',
+        headers: { ...(sessionId && { [SESSION_ID_HEADER]: sessionId }) },
+    });
+    if (!res.ok) {
+        return Promise.reject();
+    }
+}
+
+export const useDeletePost = (id: string): UseMutationResult<void, Error, void> => {
+    const { data: authIdentity } = useAuthIdentity();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationKey: [MutationKey.DELETE_POST, id],
+        mutationFn: () => deletePost(authIdentity?.id, { id }),
         onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: [QueryKey.LIST_POSTS],

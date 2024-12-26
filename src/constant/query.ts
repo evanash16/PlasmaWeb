@@ -9,5 +9,6 @@ export enum QueryKey {
 export enum MutationKey {
     CREATE_USER = 'createUser',
     CREATE_POST = 'createPost',
-    UPDATE_POST = 'updatePost'
+    UPDATE_POST = 'updatePost',
+    DELETE_POST = 'deletePost'
 }

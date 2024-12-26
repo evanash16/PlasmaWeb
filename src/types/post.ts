@@ -44,3 +44,7 @@ export interface OptionalString {
     isRemove?: boolean;
     value?: string;
 }
+
+export interface DeletePostRequest {
+    id: string;
+}
