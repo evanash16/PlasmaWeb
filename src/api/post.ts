@@ -20,11 +20,14 @@ import {SESSION_ID_HEADER} from "../constant/header";
 import qs from "qs";
 import {omit} from "lodash";
 
-const listPosts = async (input: ListPostsRequest): Promise<ListPostsResponse> => {
+const listPosts = async (sessionId: string | undefined, input: ListPostsRequest): Promise<ListPostsResponse> => {
     const query = qs.stringify(input, {
         skipNulls: true
     });
-    const res = await fetch(`${baseUrl}/post?${query}`);
+    const res = await fetch(`${baseUrl}/post?${query}`, {
+        method: 'GET',
+        headers: { ...(sessionId && { [SESSION_ID_HEADER]: sessionId }) },
+    });
     if (!res.ok) {
         return Promise.reject(res.json());
     }
@@ -32,12 +35,15 @@ const listPosts = async (input: ListPostsRequest): Promise<ListPostsResponse> =>
 }
 
 export const useListPosts = (input: ListPostsRequest): UseInfiniteQueryResult<InfiniteData<ListPostsResponse>, Error> => {
+    const { data: authIdentity } = useAuthIdentity();
+
     return useInfiniteQuery({
         initialData: undefined,
         initialPageParam: input.paginationToken,
         queryKey: [QueryKey.LIST_POSTS, input],
-        queryFn: ({ pageParam }) => listPosts({ ...input, paginationToken: pageParam as string }),
+        queryFn: ({ pageParam }) => listPosts(authIdentity?.id, { ...input, paginationToken: pageParam as string }),
         getNextPageParam: ({ paginationToken }) => paginationToken,
+        enabled: Boolean(input.postedById || authIdentity?.id),
     });
 }
 

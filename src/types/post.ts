@@ -1,6 +1,6 @@
 
 export interface ListPostsRequest {
-    postedById: string;
+    postedById?: string;
     sortOrder?: PostsSortOrder,
     maxPageSize?: number;
     paginationToken?: string;

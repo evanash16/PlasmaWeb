@@ -8,10 +8,10 @@ import PostContainer from "./PostContainer";
 import {Box, Button, SpaceBetween, Spinner} from "@cloudscape-design/components";
 
 export interface PostsProps {
-    postedById: string;
+    postedById?: string;
 }
 
-const UserPosts = ({postedById}: PostsProps) => {
+const PostStack = ({postedById}: PostsProps) => {
     const {
         data: listPostsResponse,
         isFetching: isListPostsFetching,
@@ -44,4 +44,4 @@ const UserPosts = ({postedById}: PostsProps) => {
     )
 }
 
-export default UserPosts;
+export default PostStack;

@@ -8,6 +8,7 @@ import Auth, {AuthType} from "./component/pages/auth/Auth";
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import Profile from "./component/pages/profile/Profile";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+import Home from "./component/pages/home/Home";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ root.render(
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Layout/>}>
+                        <Route index element={<Home/>}/>
                         <Route path='profile*' element={<Profile/>}/>
                     </Route>
                     <Route path="/auth">

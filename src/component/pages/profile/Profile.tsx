@@ -2,7 +2,7 @@ import React, {useCallback, useMemo} from "react";
 import ManagePost from "../../common/ManagePost";
 import {Box, Button, Container, Grid, Header, SpaceBetween, Spinner} from "@cloudscape-design/components";
 import {useAuthIdentity} from "../../../api/auth";
-import UserPosts from "../../common/UserPosts";
+import PostStack from "../../common/PostStack";
 import {useProfileParams} from "../../../util/url";
 import {useGetUser} from "../../../api/user";
 import {useCreateFollowUser, useDeleteFollowUser, useGetFollowUser} from "../../../api/follow";
@@ -59,7 +59,7 @@ const Profile = () => {
                         </Container>
                     )}
                     {userId && <Followers userId={userId}/>}
-                    {userId && <UserPosts postedById={userId}/>}
+                    {userId && <PostStack postedById={userId}/>}
                 </SpaceBetween>
             </Grid>
         </Box>
