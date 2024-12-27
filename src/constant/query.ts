@@ -3,6 +3,7 @@ export enum QueryKey {
     SEARCH_USERS = 'searchUsers',
     GET_USER = 'getUser',
     LIST_POSTS = 'listPosts',
+    LIST_FOLLOWS = 'listFollows',
     GET_FOLLOW_USER = 'getFollowUser',
     AUTH_IDENTITY = 'authIdentity',
 }

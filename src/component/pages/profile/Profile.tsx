@@ -6,6 +6,7 @@ import UserPosts from "../../common/UserPosts";
 import {useProfileParams} from "../../../util/url";
 import {useGetUser} from "../../../api/user";
 import {useCreateFollowUser, useDeleteFollowUser, useGetFollowUser} from "../../../api/follow";
+import Followers from "./Followers";
 
 const Profile = () => {
     const {id} = useProfileParams();
@@ -57,6 +58,7 @@ const Profile = () => {
                             <ManagePost operation='create'/>
                         </Container>
                     )}
+                    {userId && <Followers userId={userId}/>}
                     {userId && <UserPosts postedById={userId}/>}
                 </SpaceBetween>
             </Grid>

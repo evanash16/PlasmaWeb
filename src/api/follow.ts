@@ -2,13 +2,22 @@ import {
     CreateFollowUserRequest,
     CreateFollowUserResponse, DeleteFollowUserRequest,
     GetFollowUserRequest,
-    GetFollowUserResponse
+    GetFollowUserResponse, ListFollowsRequest, ListFollowsResponse
 } from "../types/follow";
 import {baseUrl} from "../constant/api";
 import {SESSION_ID_HEADER} from "../constant/header";
-import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
+import {
+    InfiniteData, useInfiniteQuery,
+    UseInfiniteQueryResult,
+    useMutation,
+    UseMutationResult,
+    useQuery,
+    useQueryClient,
+    UseQueryResult
+} from "@tanstack/react-query";
 import {useAuthIdentity} from "./auth";
 import {MutationKey, QueryKey} from "../constant/query";
+import qs from "qs";
 
 
 const getFollowUser = async (sessionId: string | undefined, input: GetFollowUserRequest): Promise<GetFollowUserResponse> => {
@@ -31,6 +40,28 @@ export const useGetFollowUser = (input: GetFollowUserRequest): UseQueryResult<Ge
         queryFn: () => getFollowUser(authIdentity?.id, input),
         retry: false, // assume the first request will succeed or fail with a 404, don't retry
         enabled: Boolean(input.userId && authIdentity?.id) && input.userId !== authIdentity?.userId
+    });
+}
+
+const listFollowUsers = async (input: ListFollowsRequest): Promise<ListFollowsResponse> => {
+    const query = qs.stringify(input, {
+        skipNulls: true,
+    });
+    const res = await fetch(`${baseUrl}/follow?${query}`);
+    if (!res.ok) {
+        return Promise.reject(res.json());
+    }
+    return (await res.json()) as ListFollowsResponse;
+}
+
+export const useListFollowUsers = (input: ListFollowsRequest): UseInfiniteQueryResult<InfiniteData<ListFollowsResponse>, Error> => {
+    return useInfiniteQuery({
+        initialData: undefined,
+        initialPageParam: input.paginationToken,
+        queryKey: [QueryKey.LIST_FOLLOWS, input],
+        queryFn: ({ pageParam }) => listFollowUsers({ ...input, paginationToken: pageParam as string }),
+        getNextPageParam: ({ paginationToken }) => paginationToken,
+        enabled: Boolean(input.userId),
     });
 }
 

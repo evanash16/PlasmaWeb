@@ -22,7 +22,7 @@ const Layout = () => {
         data: searchUsersResponse,
     } = useSearchUsers({
         usernameSearchString,
-        maxPageSize: 5
+        maxPageSize: 10
     });
     const users: User[] = useMemo(() =>
             flow(map<SearchUsersResponse, User[]>(({users}) => users), flatten)(searchUsersResponse?.pages),

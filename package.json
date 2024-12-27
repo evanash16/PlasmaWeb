@@ -26,6 +26,7 @@
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^5.62.10",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@tsconfig/recommended": "^1.0.8",
